@@ -1,0 +1,19 @@
+# Terraform / Terragrunt
+**/.terraform/*
+**/.terragrunt-cache/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+
+# Archivos generados por terragrunt (generate "provider"/"backend")
+provider.tf
+terragrunt-backend.tf
+versions_override.tf
