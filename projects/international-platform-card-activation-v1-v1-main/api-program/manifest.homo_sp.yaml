@@ -1,0 +1,11 @@
+iac_tf_repo_id: "62681579"
+deploy:
+  integration:
+    type: VPC_LINK
+    resources:
+      api_gateway:
+        id: w15dun9ihl
+      vpc_link:
+        id: 1ii2td
+        tags:
+          service: api-program-issuing

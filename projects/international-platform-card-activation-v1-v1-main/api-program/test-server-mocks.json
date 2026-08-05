@@ -1,0 +1,165 @@
+[
+  {
+    "response_status": "200",
+    "header_response": { 
+		"content_type": "application/json" 
+	},
+    "path": "/v1/core/international_platform/card_activation/activation",
+    "method": "POST",
+    "test_id": "international_platform_card_activation_activation_case_200",
+    "api_name": "ppi_card_activation",
+    "api_version": "v1",
+    "header_parameters": {},
+    "query_parameters": {
+		"bank_code":"701"
+	},
+    "payload_request": {
+			"client": {
+				"gender":"M",        
+				"document_number":"19501150",
+				"document_type":"001"
+			},
+			"card" : {
+				"bin":"512791",
+				"last_four_digits":"6157"
+			}		
+	},
+    "payload_response": {
+		"code": "200",
+		"moduleCode": "200",
+		"returnCode": "200",
+		"description": "Habilitación efectuada."
+	}
+  },
+  {
+    "response_status": "400",
+    "header_response": { 
+		"content_type": "application/json" 
+	},
+    "path": "/v1/core/international_platform/card_activation/activation",
+    "method": "POST",
+    "test_id": "international_platform_card_activation_activation_case_400",
+    "api_name": "ppi_card_activation",
+    "api_version": "v1",
+    "header_parameters": {},
+    "query_parameters": {
+		"bank_code":"701"
+	},
+    "payload_request": {
+		
+			"client": {
+				"gender": "F",        
+				"document_number": "15121695",
+				"document_type": "091"
+			},
+			"card" : {
+				"bin" : "419800",
+				"last_four_digits" : "8183"
+			}
+		
+	},
+    "payload_response": {
+		"status": "400",
+		"code": "PPICAACT-BAD_REQUEST",
+		"title": "Required parameters are not present"
+	}
+  },
+  {
+    "response_status": "401",
+    "header_response": { 
+		"content_type": "application/json" 
+	},
+    "path": "/v1/core/international_platform/card_activation/activation",
+    "method": "POST",
+    "test_id": "international_platform_card_activation_activation_case_401",
+    "api_name": "ppi_card_activation",
+    "api_version": "v1",
+    "header_parameters": {},
+    "query_parameters": {
+		"bank_code":"701"
+	},
+    "payload_request": {
+		
+			"client": {
+				"gender": "M",        
+				"document_number": "12456780",
+				"document_type": "201"
+			},
+			"card" : {
+				"bin" : "223231",
+				"last_four_digits" : "7777"
+			}
+		
+	},
+    "payload_response": {		
+		"status": "401",
+		"code": "UNAUTHORIZED",
+		"description": "Unauthorized."
+	}
+  },
+  {
+    "response_status": "404",
+    "header_response": { 
+		"content_type": "application/json" 
+	},
+    "path": "/v1/core/international_platform/card_activation/activation",
+    "method": "POST",
+    "test_id": "international_platform_card_activation_activation_case_404",
+    "api_name": "ppi_card_activation",
+    "api_version": "v1",
+    "header_parameters": {},
+    "query_parameters": {
+		"bank_code":"701"
+	},
+    "payload_request": {
+		
+			"client": {
+				"gender": "F",
+				"document_number": "34542268",
+				"document_type": "091"
+			},
+			"card" : {
+				"bin" : "419808",
+				"last_four_digits" : "8188"
+			}
+		
+	},
+    "payload_response": {
+		"status": "404",
+		"code": "PPICAACT-INVALID_CARD",
+		"description": "Card not found."
+	}
+  },
+  {
+    "response_status": "500",
+    "header_response": { 
+		"content_type": "application/json" 
+	},
+    "path": "/v1/core/international_platform/card_activation/activation",
+    "method": "POST",
+    "test_id": "international_platform_card_activation_activation_case_500",
+    "api_name": "ppi_card_activation",
+    "api_version": "v1",
+    "header_parameters": {},
+    "query_parameters": {
+		"bank_code":"701"
+	},
+    "payload_request": {
+		
+			"client": {
+				"gender": "M",        
+				"document_number": "22463456",
+				"document_type": "001"
+			},
+			"card" : {
+				"bin" : "773562",
+				"last_four_digits" : "1234"
+			}		
+	},
+    "payload_response": {		
+		"code": "500",
+		"description": "PPICAACT-INTERNAL_SERVER_ERROR",
+		"status": "INTERNAL SERVER ERROR."
+	}
+  }  
+]

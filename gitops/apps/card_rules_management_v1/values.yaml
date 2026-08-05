@@ -1,0 +1,64 @@
+environment: main
+service_name: card-rules-management-v1
+namespace: backend
+port: 8080
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/card_rules_management_v1
+    tag: "06f67954"
+    pullPolicy: Always
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      cpu: 250m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: "/v1/card_rules_management/?(.*)"
+  configmap:
+    PORT: "8080"
+    APP_STAGE: "dev"
+    API_PREFIX: "CRM"
+    CONTEXT: "v1/card_rules_management"
+    ORIGINS: "http://localhost:3000,http://localhost:8080,https://api-dev.prismamediosdepago.com,https://developers-dev.prismamediosdepago.com"
+    ALLOWED_HEADERS: "Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma"
+    ALLOWED_METHODS: "GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS"
+    PROPAGATE_HEADERS: "x-apip-client-id,x-apip-cuit,x-apip-partner-id,x-apip-api-name"
+    RESPONSE_HEADER: "x-apip-client-id,x-apip-cuit,x-apip-partner-id"
+    CORS_ENABLED: "true"
+    CORS_CREDENTIALS: "false"
+    PROXY_API_NAME: "card_rules_management"
+    PROXY_API_VERSION: "v1"
+    SWAGGER_PATH: "docs"
+    SWAGGER_ENABLED: "true"
+    JAEGER_ENDPOINT: "http://localhost:14268/api/traces"
+    TRACING_ENDPOINT: http://open-telemetry-collector-collector.otel:4318/v1/traces
+    LOG_OBFUSCATE: "message.config.params,message.config.headers"
+    LOG_EXCLUDE_CONTENT_TYPE: "application/pdf,application/x-download"
+    LOG_STREAM_TO_OS: "false"
+    ACCESS_VALIDATION_API_URL_LIVENESS: "/v2/core/access-validation/health/liveness"
+    ACCESS_VALIDATION_API_URL: "http://acc-val-dev-internal.api-homo.prismamediosdepago.com/v2/core/access-validation/validation"
+    DC_CARD_API_URL: "https://developers-dev.prismamediosdepago.com:8082/v1/core/card_management"
+    DC_CARD_LIVENESS: "/v1/core/card_management/echo/message"
+    CC_CARD_API_URL: "https://developers-dev.prismamediosdepago.com:8082/v1/core/card_management"
+    CC_CARD_LIVENESS: "/v1/core/card_management/echo/message"
+    OBSERVABILITY_INDEX_NAME: issuing-dev
+    OBSERVABILITY_NODE: https://vpc-api-program-ieptwp3irqagbd6hv6mwosjfqa.us-east-1.es.amazonaws.com
+    OBSERVABILITY_DOCUMENT_OBFUSCATE: headers.request['authorization'],headers.request['apiKey']
+    SKIP_HEALTH_CHECKS: observability
+  secrets:
+    TEST_KEY: testKeyEnv-test
+
+  external_secret:
+    service_account_name: opensearch-sa-dev
+    secret_name: opensearch-dev-dev-secret

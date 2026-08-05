@@ -1,0 +1,52 @@
+apiVersion: v1
+environment: main
+namespace: backend
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/api-test-xray-v1
+    tag: "766f0758"
+    pullPolicy: Always
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      cpu: 250m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: /v1/api-test-xray/?(.*)
+  configmap:
+    PORT: "8080"
+    APP_STAGE: "dev"
+    API_PREFIX: API-TEST-XRAY
+    CONTEXT: v1/api-test-xray
+    ORIGINS: http://localhost:3000,http://localhost:8080
+    ALLOWED_HEADERS: Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma
+    ALLOWED_METHODS: GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS
+    CORS_ENABLED: "true"
+    CORS_CREDENTIALS: "false"
+    SWAGGER_PATH: docs
+    SWAGGER_ENABLED: "true"
+    TRACING_ENDPOINT: http://open-telemetry-collector-collector.otel:4318/v1/traces
+    LOG_OBFUSCATE: message.config.url,message.config.params,message.config.headers
+    LOG_EXCLUDE_CONTENT_TYPE: application/pdf,application/x-download
+    OBSERVABILITY_INDEX_NAME: issuing-dev
+    OBSERVABILITY_NODE: https://vpc-api-program-ieptwp3irqagbd6hv6mwosjfqa.us-east-1.es.amazonaws.com
+    OBSERVABILITY_DOCUMENT_OBFUSCATE: headers.request['authorization'],headers.request['apiKey']
+    RICK_AND_MORTY_API_URL: https://rickandmortyapi.com/api
+    RICK_AND_MORTY_API_URL_LIVENESS: /api/character/1
+    ACCESS_VALIDATION_API_URL: https://developers-qa.prismamediosdepago.com:8087/v2/core/access_validation/validation
+    ACCESS_VALIDATION_API_URL_LIVENESS: /v2/core/access_validation/echoTest/hola
+  secrets:
+    TEST_KEY: testKeyEnv-test
+    OBSERVABILITY_NODE_USERNAME: apiprogram
+    OBSERVABILITY_NODE_PASSWORD: ApiProgram123$$

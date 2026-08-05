@@ -1,0 +1,42 @@
+apiVersion: v1
+environment: develop
+service_name: api-adm-transaction-data-v1
+namespace: backend
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/api-adm-transaction-data_v1
+    tag: "51b460cd"
+    pullPolicy: Always
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      cpu: 1000m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+  configmap:
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://open-telemetry-collector-collector.otel:4317/
+    OTEL_RESOURCE_ATTRIBUTES: service.name=api-adm-transaction-data-v1
+    TRANSACTION_DATA_PATH: http://api.controversias-adm.issuing-dev.prismamp.com/transaction-data/v2/adm/transaction_data	
+    AUTHORIZATION_GRANT_TYPE: client_credentials
+    TOKEN_URL: https://controversys-adm-dev.auth.us-east-1.amazoncognito.com/oauth2/token
+    ACCESS_VALIDATION_BASE_URL: http://acc-val-dev-internal.api-homo.prismamediosdepago.com
+    ACCESS_VALIDATION_VALIDATION_URI: /v2/core/access-validation/validation
+    ACCESS_VALIDATION_PORT: '80'
+
+external_secret:
+  service_account_name: api-adm-transaction-data-v1
+  secret_name: api-adm-transaction-data-v1-secret
+  secret_store_name: api-adm-transaction-data-v1-secret-store
+  secret_key: "arn:aws:secretsmanager:us-east-1:541141112016:secret:adm-transaction-data-apigw-HkQhfi"
+  external_secret_role: "arn:aws:iam::541141112016:role/iss-t6/controversias-transaction-data-apigw-sm-access-dev-irsa-app"

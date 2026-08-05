@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: "{{ .Values.external_secret.service_account_name }}"
+  namespace: {{ .Values.namespace }}
+  annotations:
+    eks.amazonaws.com/role-arn: "{{ .Values.external_secret.external_secret_role }}"

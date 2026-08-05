@@ -1,0 +1,64 @@
+apiVersion: v1
+environment: main
+namespace: backend
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/test-deploy-java-apip-0-v1
+    tag: "2c547f9c"
+    pullPolicy: Always
+  replicaCount: 1
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 200m
+    limits:
+      cpu: 500m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: /v1/api_proxy_name_test_java/?(.*)
+  configmap:
+    API_PREFIX: api_proxy_name_test_java
+    CONTEXT: v1/api_proxy_name_test_java
+    PROXY_API_NAME: api_proxy_name_test_java
+    PROXY_API_VERSION: v1
+    API_CORE_HOST: https://developers-dev.prismamediosdepago.com:8082
+    API_CORE_PATH: /v1/core/international_platform/balance_financing
+    API_CORE_LIVENESS_PATH: /v1/core/atm/echo/message
+    HEADER_PROPAGATOR_HEADERS: x-apip-cuit,x-apip-partner-id,x-apip-client-id
+    ACCESS_VALIDATION_API_URL: http://acc-val-dev.api-homo.prismamediosdepago.com
+    ACCESS_VALIDATION_API_URL_VALIDATION: /v2/core/access-validation/validation
+    ACCESS_VALIDATION_API_URL_LIVENESS: /v2/core/access-validation/health/liveness
+    ACCESS_VALIDATION_EXCLUDE_PATHS: /api-docs
+    ERROR_ALLOW_RETRO_COMPATIBILITY: "false"
+    LOGGER_EXCLUDE_ENDPOINTS: "**/health/**"
+    LOGGER_REQUEST_FORMAT_STYLE: http
+    LOGGER_OBFUSCATE_HEADERS: Authorization,X-Secret
+    LOGGER_OBFUSCATE_PARAMETERS: access_token,password
+    LOGGER_OBFUSCATE_BODY: password,secret
+    OBSERVABILITY_ENABLED: "true"
+    OBSERVABILITY_INDEX_NAME: issuing
+    OBSERVABILITY_HOST: vpc-api-program-ieptwp3irqagbd6hv6mwosjfqa.us-east-1.es.amazonaws.com
+    OBSERVABILITY_PORT: "443"
+    OBSERVABILITY_SCHEMA: https
+    OTEL_TRACES_EXPORTER: logging
+    OTEL_METRICS_EXPORTER: none
+    OTEL_LOGS_EXPORTER: none
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://open-telemetry-collector-collector.otel:4317/
+    OTEL_RESOURCE_ATTRIBUTES: service.name=test-deploy-java-apip-0-v1
+    OTEL_EXPORTER_OTLP_PROTOCOL: grpc
+    LOG_FORMAT: console
+    LOG_LEVEL: INFO
+    REQUEST_LOG_LEVEL: TRACE
+    APP_STAGE: dev
+  external_secret:
+    secret_name: opensearch-dev-dev-secret
+    service_account_name: opensearch-sa-dev

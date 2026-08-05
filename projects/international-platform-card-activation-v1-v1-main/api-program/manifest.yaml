@@ -1,0 +1,66 @@
+has_homologation: true
+
+paths:
+  context: /v1/international_platform/card_activation
+  openapi: /v1/international_platform/card_activation/v3/api-docs
+  health: /v1/international_platform/card_activation/health
+  info: /v1/international_platform/card_activation/info
+
+portal:
+  name: international_platform_card_activation_v1
+  displayName: Int - Card Activation
+  description: API disponible únicamente para bancos clientes de la Plataforma de Procesamiento Internacional (PPI) de PRISMA, que operan fuera de Argentina. Permite habilitar las tarjetas de la Plataforma Internacional. La API International Platform - Card Activation - Habilitación de Tarjeta permite obtener habilitar la tarjeta al momento.
+  versionNumber: v1
+  versionDescription: 2024, 30 de Julio Version inicial
+
+  status: ACTIVE
+  access: public
+
+  mostSearched: false
+  version: 1
+  latest: true
+  versionStatus: "ACTIVE"
+  visibility: "All"
+
+  documentation:
+    - domain: "https://apiportal-docs.s3.amazonaws.com"
+      path: "/vertical_issuing/documentacion/Api Int - Card Activation.pdf"
+      title: "Ver Documento"  
+
+  availableFor: 
+    - Banco PPI
+
+  brands: 
+    - International
+
+  categories: 
+    - Gestión y consulta
+
+  restricted: true
+
+  securityLevel:
+    - OAuth2.2legged
+
+  tags: 
+    - internacional
+    - international
+    - card
+    - activation
+
+  vertical:
+    identifier: vertical_issuing
+
+  type: partner
+
+  requireHomologation: 'true'
+
+  repositoryId: 
+
+monetization:
+  plan_id: 1000
+  model: FIJO
+  status_code: 200, 201, 203, 204
+
+mock_relations:
+  '/v1/international_platform/card_activation/activation': '/v1/core/international_platform/card_activation/activation'
+  '/v1/international_platform/card_activation/echoTest/:message': '/v1/core/international_platform/card_activation/echoTest/:message'  

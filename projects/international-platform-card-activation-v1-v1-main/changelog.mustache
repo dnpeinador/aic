@@ -1,0 +1,76 @@
+<div align="center"><h1>📝 Changelog</h1>
+    <p>All changes of this package will be documented in this file.</p></div>
+
+---
+
+{{#tags}}
+{{#ifReleaseTag .}}
+## [{{name}}]({{PROJECT_URL}}/tree/{{name}}) ({{tagDate .}})
+
+        {{#ifContainsType commits type='feat'}}
+### ✨ Features
+
+            {{#commits}}
+                {{#ifCommitType . type='feat'}}
+* {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription
+                            .}}} ([{{hash}}]({{PROJECT_URL}}/commit/{{hashFull}}))
+                {{/ifCommitType}}
+            {{/commits}}
+        {{/ifContainsType}}
+
+        {{#ifContainsType commits type='fix'}}
+### 🐛 Bug Fixes
+
+            {{#commits}}
+                {{#ifCommitType . type='fix'}}
+* {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription
+                            .}}} ([{{hash}}]({{PROJECT_URL}}/commit/{{hashFull}}))
+                {{/ifCommitType}}
+            {{/commits}}
+        {{/ifContainsType}}
+
+        {{#ifContainsType commits type='chore'}}
+### 👨‍💻 Chores
+
+            {{#commits}}
+                {{#ifCommitType . type='chore'}}
+* {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription
+                            .}}} ([{{hash}}]({{PROJECT_URL}}/commit/{{hashFull}}))
+                {{/ifCommitType}}
+            {{/commits}}
+        {{/ifContainsType}}
+
+        {{#ifContainsType commits type='docs'}}
+### 📝 Docs
+
+            {{#commits}}
+                {{#ifCommitType . type='docs'}}
+* {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription
+                            .}}} ([{{hash}}]({{PROJECT_URL}}/commit/{{hashFull}}))
+                {{/ifCommitType}}
+            {{/commits}}
+        {{/ifContainsType}}
+
+        {{#ifContainsType commits type='build'}}
+### 🧱 Builds
+
+            {{#commits}}
+                {{#ifCommitType . type='build'}}
+* {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription
+                            .}}} ([{{hash}}]({{PROJECT_URL}}/commit/{{hashFull}}))
+                {{/ifCommitType}}
+            {{/commits}}
+        {{/ifContainsType}}
+
+        {{#ifContainsType commits type='refactor'}}
+### 🛠️ Refactor
+
+            {{#commits}}
+                {{#ifCommitType . type='refactor'}}
+* {{#eachCommitScope .}} **{{.}}** {{/eachCommitScope}} {{{commitDescription
+                            .}}} ([{{hash}}]({{PROJECT_URL}}/commit/{{hashFull}}))
+                {{/ifCommitType}}
+            {{/commits}}
+        {{/ifContainsType}}
+{{/ifReleaseTag}}
+{{/tags}}

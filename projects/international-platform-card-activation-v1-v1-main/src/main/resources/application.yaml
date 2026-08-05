@@ -1,0 +1,111 @@
+# Server settings including context path, port, and compression options
+server:
+  servlet:
+    context-path: /v1/international_platform/card_activation
+  port: 8080
+  compression:
+    enabled: true
+    min-response-size: 2048
+    mime-types: application/json,application/xml,text/html,text/xml,text/plain
+
+# Application information, useful for deployment and operational tracking
+info:
+  current_commit: ${CURRENT_COMMIT:}
+
+# Spring Framework global settings including ANSI output, application metadata, and Jackson configurations
+spring:
+  output:
+    ansi.enabled: ALWAYS
+  application:
+    name: international-platform-card-activation-v1
+    version: @project.version@
+  jackson:
+    property-naming-strategy: SNAKE_CASE
+
+# Springdoc configuration for API documentation generation and management
+springdoc:
+  show-actuator: false
+  api-docs:
+    path: /api-docs
+  default-produces-media-type: application/json
+
+# OpenAPI documentation specifics, providing detailed info about the API for consumers
+documentation:
+  openapi:
+    info:
+      prefix: ${API_PREFIX:V1/INTERNATIONAL_PLATFORM/CARD_ACTIVATION}
+      title: Proxy API
+      description: Proxy API documentation
+      version: 1.0
+      contact:
+        name: Prisma Medios de Pago
+        email: support@prismamp.com
+
+# Management and monitoring endpoint configurations, including health and readiness checks
+management:
+  endpoint:
+    health:
+      group:
+        readiness:
+          include: readinessState,requestApi
+  endpoints:
+    web:
+      base-path: ${server.servlet.context-path}
+      exposure:
+        include: "health,readiness,info"
+        exclude: env
+
+# Proxy service configuration, including name and version
+proxy:
+  name: ${PROXY_API_NAME:international-platform-card-activation-v1}
+  version: ${PROXY_API_VERSION:v1}
+
+# Core API settings, defining host, path, and health check configurations
+api-core:
+  host: ${API_CORE_HOST:https://api-core-dev.prismamediosdepago.com/v1/international_platform/card_activation/activation}
+  path: ${API_CORE_PATH:}
+  liveness-path: ${API_CORE_LIVENESS_PATH:}
+
+# Header propagation settings for consistent forwarding of headers in microservices architecture
+header-propagator:
+  name: apip-api-core
+  headers: ${HEADER_PROPAGATOR_HEADERS:x-apip-cuit,x-apip-partner-id,x-apip-client-id}
+
+# Access validation configurations for external service validation paths
+access-validation:
+  host-url: ${ACCESS_VALIDATION_API_URL:http://acc-val-dev.api-homo.prismamediosdepago.com}
+  validation-path: ${ACCESS_VALIDATION_API_URL_VALIDATION:/v2/core/access-validation/validation}
+  liveness-path: ${ACCESS_VALIDATION_API_URL_LIVENESS:/v2/core/access-validation/health/liveness}
+  exclude:
+    paths: ${ACCESS_VALIDATION_EXCLUDE_PATHS:/samples}
+
+# Configuration for error handling and backward compatibility
+errors:
+  allow-retro-compatibility: ${ERROR_ALLOW_RETRO_COMPATIBILITY:false}
+
+# Logbook configuration for detailed logging, including exclusions and security filters
+logbook:
+  exclude: ${LOGGER_EXCLUDE_ENDPOINTS:**/health/**}
+  filter.enabled: true
+  secure-filter.enabled: true
+  format.style: ${LOGGER_REQUEST_FORMAT_STYLE:http}
+  strategy: body-only-if-status-at-least
+  minimum-status: 200
+  obfuscate:
+    headers: ${LOGGER_OBFUSCATE_HEADERS:Authorization,X-Secret}
+    parameters: ${LOGGER_OBFUSCATE_PARAMETERS:access_token,password}
+    json-body-fields: ${LOGGER_OBFUSCATE_BODY:password,secret}
+  write:
+    chunk-size: 100000
+
+# OpenSearch configuration for observability and operational insights
+opensearch:
+  enabled: ${OBSERVABILITY_ENABLED:false}
+  index: ${OBSERVABILITY_INDEX_NAME:proxy-sample}
+  user: ${OBSERVABILITY_NODE_USERNAME:admin}
+  password: ${OBSERVABILITY_NODE_PASSWORD:admin}
+  host: ${OBSERVABILITY_HOST:localhost}
+  port: ${OBSERVABILITY_PORT:9200}
+  schema: ${OBSERVABILITY_SCHEMA:http}
+  connect_timeout: 360000
+  socket_timeout: 360000

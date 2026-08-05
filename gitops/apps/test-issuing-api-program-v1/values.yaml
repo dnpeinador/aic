@@ -1,0 +1,45 @@
+apiVersion: v1
+environment: main
+namespace: backend
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/test-issuing-api-program-v1
+    tag: "ba5654d6"
+    pullPolicy: Always
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      cpu: 250m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: /v1/context/?(.*)
+  configmap:
+    PORT: "8080"
+    API_PREFIX: CONTEXT
+    CONTEXT: v1/context
+    ORIGINS: http://localhost:3000,http://localhost:8080
+    ALLOWED_HEADERS: Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma
+    ALLOWED_METHODS: GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS
+    CORS_ENABLED: "true"
+    CORS_CREDENTIALS: "false"
+    SWAGGER_PATH: docs
+    SWAGGER_ENABLED: "true"
+    JAEGER_ENDPOINT: http://localhost:14268/api/traces
+    LOG_OBFUSCATE: message.config.url,message.config.params,message.config.headers
+    RICK_AND_MORTY_API_URL: https://rickandmortyapi.com/api
+    RICK_AND_MORTY_API_URL_LIVENESS: /api/character/1
+    ACCESS_VALIDATION_API_URL: https://developers-qa.prismamediosdepago.com:8087/v2/core/access_validation/validation
+    ACCESS_VALIDATION_API_URL_LIVENESS: /v2/core/access_validation/echoTest/hola
+  secrets:
+    TEST_KEY: testKeyEnv-test

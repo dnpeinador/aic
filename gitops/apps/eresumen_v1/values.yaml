@@ -1,0 +1,58 @@
+apiVersion: v1
+environment: main
+namespace: backend
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/eresumen_v1
+    tag: "2ac37a8b"
+    pullPolicy: Always
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      cpu: 250m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: "/v1/eresumen/?(.*)"
+  configmap:
+    APP_STAGE: "dev"
+    PORT: "8080"
+    API_PREFIX: V1/ERESUMEN
+    CONTEXT: v1/eresumen
+    ORIGINS: http://localhost:3000,http://localhost:8080
+    ALLOWED_HEADERS: Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma
+    ALLOWED_METHODS: GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS
+    CORS_ENABLED: "true"
+    CORS_CREDENTIALS: "false"
+    SWAGGER_PATH: docs
+    SWAGGER_ENABLED: "true"
+    JAEGER_ENDPOINT: http://localhost:14268/api/traces
+    TRACING_ENDPOINT: http://open-telemetry-collector-collector.otel:4318/v1/traces
+    LOG_OBFUSCATE: message.config.url,message.config.params,message.config.headers
+    LOG_EXCLUDE_CONTENT_TYPE: application/pdf,application/x-download
+    OBSERVABILITY_INDEX_NAME: "issuing-dev"
+    OBSERVABILITY_NODE: "https://vpc-api-program-ieptwp3irqagbd6hv6mwosjfqa.us-east-1.es.amazonaws.com"
+    OBSERVABILITY_DOCUMENT_OBFUSCATE: "headers.request['authorization'],headers.request['apiKey']"
+    RICK_AND_MORTY_API_URL: https://rickandmortyapi.com/api
+    RICK_AND_MORTY_API_URL_LIVENESS: /api/character/1
+    ACCESS_VALIDATION_API_URL: "http://acc-val-dev-internal.api-homo.prismamediosdepago.com/v2/core/access-validation/validation"
+    ACCESS_VALIDATION_API_URL_LIVENESS: "/v2/core/access-validation/health/liveness"
+    SKIP_HEALTH_CHECKS: observability
+  secrets:
+    TEST_KEY: testKeyEnv-test
+    OBSERVABILITY_NODE_USERNAME: apiprogram
+    OBSERVABILITY_NODE_PASSWORD: ApiProgram123$$
+
+  external_secret:
+    service_account_name: opensearch-sa-dev
+    secret_name: opensearch-dev-dev-secret

@@ -1,0 +1,17 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: "international-platform-card-activation-v1"
+  description: "international_platform_card_activation"
+  tags:
+    - java
+    - maven
+    - api-program
+    - microservices
+    - spring-boot
+    - postgres
+spec:
+  type: service
+  lifecycle: development
+  owner: "GS.IDP.Verticals.issuing-apip"
+  system: "GS.IDP.Verticals.issuing-apip"

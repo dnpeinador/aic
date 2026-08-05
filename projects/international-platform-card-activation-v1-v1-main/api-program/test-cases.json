@@ -1,0 +1,67 @@
+{
+	"name":"international_platform_card_activation_v1", 
+	"examples":[
+	{
+		"number":1,
+		"title":"POST /activation",
+		"rows":[		
+		{
+			"group":"POST activation: Case 200",
+			"params":{
+				"bank_code":"701",
+				"client.gender":"M",
+				"client.document_number":"19501150",
+				"client.document_type":"001",
+				"card.bin":"512791",
+				"card.last_four_digits":"6157"
+			}
+		},
+		{
+			"group":"POST activation: Case 400",
+			"params":{
+				"bank_code":"701",
+				"client.gender":"F",
+				"client.document_number":"15121695",
+				"client.document_type":"091",
+				"card.bin":"419800",
+				"card.last_four_digits":"8183"
+			}
+		},
+		{
+			"group":"POST activation: Case 401",
+			"params":{
+				"bank_code":"701",
+				"client.gender":"M",
+				"client.document_number":"12456780",
+				"client.document_type":"201",
+				"card.bin":"223231",
+				"card.last_four_digits":"7777"
+			}
+		},
+		{
+			"group":"POST activation: Case 404",
+			"params":{
+				"bank_code":"701",
+				"client.gender":"F",
+				"client.document_number":"34542268",
+				"client.document_type":"091",
+				"card.bin":"419808",
+				"card.last_four_digits":"8188"
+			}
+		},
+		{
+			"group":"POST activation: Case 500",
+			"params":{
+				"bank_code":"701",
+				"client.gender":"M",
+				"client.document_number":"22463456",
+				"client.document_type":"001",
+				"card.bin":"773562",
+				"card.last_four_digits":"1234"
+			}
+		}
+		]
+		
+	}]
+	
+}

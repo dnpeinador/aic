@@ -1,0 +1,12 @@
+#!/bin/bash
+
+echo "Running test..."
+./mvnw test
+status=$?
+
+if [ $status -eq 0 ]; then
+     exit 0
+ else
+     printf >&2 "\nERROR: There are test failures.\n\n"
+     exit 1
+ fi

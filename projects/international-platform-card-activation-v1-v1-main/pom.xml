@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<project
+  xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+>
+
+    <!-- Maven Model Version -->
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- Parent POM -->
+    <parent>
+        <groupId>com.prismamp.archetype</groupId>
+        <artifactId>java-spring-boot-mvn-proxy-booster</artifactId>
+        <version>0.3.0</version>
+        <relativePath />
+    </parent>
+
+    <!-- Project Coordinates -->
+    <groupId>com.prismamp</groupId>
+    <artifactId>international-platform-card-activation-v1</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>international-platform-card-activation-v1</name>
+    <description>international_platform_card_activation</description>
+
+    <!-- Project Build Configuration -->
+    <build>
+        <!-- Plugins -->
+        <plugins>
+            <!-- Maven Tiles Plugin: allows a modular, composition based appraoch to Apache Maven builds -->
+            <plugin>
+                <groupId>io.repaint.maven</groupId>
+                <artifactId>tiles-maven-plugin</artifactId>
+                <version>${tiles-maven-plugin.version}</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <!-- Tiles -->
+                    <tiles>
+                        <!-- Acceptance tile: contains the configuration related to unit and integration tests -->
+                        <!--<tile
+            >com.prismamp.archetype:acceptance-tile:${acceptance-testing-tile.version}</tile>-->
+                        <!-- Codestyle tile: contains plugins for formatting and checking code style -->
+                        <tile
+            >com.prismamp.archetype:codestyle-tile:${codestyle-tile.version}</tile>
+                        <!-- Compiler tile: contains the plugins used to compile the sources of the project -->
+                        <tile
+            >com.prismamp.archetype:compiler-tile:${compiler-tile.version}</tile>
+                        <!-- Project Config tile: executes Ant tasks for copy hooks on .git directory -->
+                        <tile
+            >com.prismamp.archetype:project-config-tile:${project-config-tile.version}</tile>
+                        <!-- Quality tile: contains the plugin for integrates Maven with SonarQube for code analysis -->
+                        <tile
+            >com.prismamp.archetype:quality-tile:${quality-tile.version}</tile>
+                        <!-- Telemetry tile: contains the plugins needed for manage telemetry -->
+                        <tile
+            >com.prismamp.archetype:telemetry-tile:${telemetry-tile.version}</tile>
+                    </tiles>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+

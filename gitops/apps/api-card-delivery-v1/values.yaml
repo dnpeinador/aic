@@ -1,0 +1,71 @@
+apiVersion: v1
+environment: develop
+service_name: api-card-delivery-v1
+namespace: backend
+
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/api-card-delivery-v1
+    tag: "051e3d95"
+    pullPolicy: Always
+
+  historyLimitReplicas: 0
+
+  resources:
+    requests:
+      cpu: 500m
+    limits:
+      cpu: 1000m
+
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: /v1/card_delivery/?(.*)
+
+  configmap:
+    PORT: "8080"
+    APP_STAGE: dev
+    API_PREFIX: api-card-delivery
+    CONTEXT: v1/card_delivery
+
+    ORIGINS: "*"
+    ALLOWED_HEADERS: "*"
+    ALLOWED_METHODS: GET,POST,PUT,PATCH,DELETE,OPTIONS
+    PROPAGATE_HEADERS: authorization,x-correlation-id,x-channel,x-client-id
+    CORS_ENABLED: "true"
+    CORS_CREDENTIALS: "true"
+
+    PROXY_API_NAME: api-card-delivery
+    PROXY_API_VERSION: v1
+
+    SWAGGER_PATH: docs
+    SWAGGER_ENABLED: "true"
+
+    SKIP_HEALTH_CHECKS: observability
+
+    OTEL_EXPORTER_OTLP_ENDPOINT: http://open-telemetry-collector-collector.otel:4317/
+    OTEL_RESOURCE_ATTRIBUTES: service.name=api-card-delivery-v1
+    TRACING_ENDPOINT: http://open-telemetry-collector-collector.otel:4317/
+
+    OBSERVABILITY_INDEX_NAME: api-card-delivery
+    CARD_DELIVERY_MS_BASE_URL: https://developers-dev.prismamediosdepago.com:8082/v1/core/card_delivery
+    CARD_DELIVERY_MS_BASE_URL_LIVENESS: /v1/core/atm/echo/message
+    OBSERVABILITY_DOCUMENT_OBFUSCATE: authorization,password,client_secret
+    LOG_OBFUSCATE: authorization,password,client_secret
+    LOG_EXCLUDE_CONTENT_TYPE: multipart/form-data
+
+    ACCESS_VALIDATION_API_URL: http://acc-val-dev-internal.api-homo.prismamediosdepago.com/v2/core/access-validation/validation
+    ACCESS_VALIDATION_API_URL_LIVENESS: /v2/core/access-validation/health/liveness
+
+  external_secret:
+    service_account_name: opensearch-sa-dev
+    secret_name: opensearch-dev-dev-secret

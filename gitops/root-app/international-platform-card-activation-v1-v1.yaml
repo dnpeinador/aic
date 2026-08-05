@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: international-platform-card-activation-v1
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: backend
+  project: default
+  source:
+    path: apps/international-platform-card-activation-v1-v1
+    repoURL: https://gitlab.com/arquitectura-prisma/issuing/api-program-issuing/gitops/k8s-manifests-DEV
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values.yaml
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true

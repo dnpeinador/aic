@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#git stash -q --keep-index
+
+./mvnw com.spotify.fmt:fmt-maven-plugin:format
+#statusFormat=$?
+
+#git stash pop -q
+
+#exit $statusFormat
+
+./mvnw checkstyle:checkstyle@validate
+ status=$?
+ if [ $status -eq 0 ]; then
+     exit 0
+ else
+     printf >&2 "\nERROR: Checkstyle issues found! Check the log output above for ERROR lines.\n\n"
+     exit 1
+ fi

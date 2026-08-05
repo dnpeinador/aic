@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Chart.Name }}-cm
+  namespace: {{ .Values.namespace }}
+data:
+{{ toYaml .Values.backend.configmap | indent 2 }}

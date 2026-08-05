@@ -1,0 +1,56 @@
+apiVersion: v1
+environment: main
+namespace: backend
+hpa:
+  minReplicas: 1
+  maxReplicas: 1
+backend:
+  image:
+    repository: 541141112016.dkr.ecr.us-east-1.amazonaws.com/eresumen-v3
+    tag: "bcef94eb"
+    pullPolicy: Always
+  historyLimitReplicas: 0
+  resources:
+    requests:
+      cpu: 100m
+    limits:
+      cpu: 250m
+  service:
+    name: backend
+    data:
+      type: Internal
+      port: 8080
+      protocol: TCP
+      target_port: 8080
+      name: http
+      basepath: /v3/eresumen/?(.*)
+  configmap:
+    PORT: "8080"
+    API_PREFIX: ERESUMEN
+    APP_STAGE: dev
+    CONTEXT: v3/eresumen
+    ORIGINS: http://localhost:3000,http://localhost:8080
+    ALLOWED_HEADERS: Content-Type,Authorization,Set-Cookie,Access-Control-Allow-Origin,Cache-Control,Pragma
+    ALLOWED_METHODS: GET,HEAD,PUT,POST,DELETE,PATCH,OPTIONS
+    PROPAGATE_HEADERS: x-custom-header
+    CORS_ENABLED: "true"
+    CORS_CREDENTIALS: "false"
+    PROXY_API_NAME: eresumen
+    PROXY_API_VERSION: v3
+    SWAGGER_PATH: docs
+    SWAGGER_ENABLED: "true"
+    SKIP_HEALTH_CHECKS: observability
+    TRACING_ENDPOINT: http://open-telemetry-collector-collector.otel:4318/v1/traces
+    LOG_OBFUSCATE: message.config.url,message.config.params,message.config.headers
+    LOG_EXCLUDE_CONTENT_TYPE: application/pdf,application/x-download
+    OBSERVABILITY_INDEX_NAME: issuing-dev
+    OBSERVABILITY_NODE: https://vpc-api-program-ieptwp3irqagbd6hv6mwosjfqa.us-east-1.es.amazonaws.com
+    OBSERVABILITY_DOCUMENT_OBFUSCATE: headers.request['authorization'],headers.request['apiKey']
+    ACCESS_VALIDATION_API_URL: http://acc-val-dev.api-homo.prismamediosdepago.com/v2/core/access-validation/validation
+    ACCESS_VALIDATION_API_URL_LIVENESS: /v2/core/access-validation/health/liveness
+    ERESUMEN_API_URL: https://developers-qa.prismamediosdepago.com:8082/v3/core/eresumen
+    ERESUMEN_API_URL_LIVENESS: /v3/core/eresumen/echo/message
+    TEST_KEY: testKeyEnv-test
+  external_secret:
+    secret_name: opensearch-dev-dev-secret
+    service_account_name: opensearch-sa-dev
